@@ -24,7 +24,7 @@ public class Account implements UserDetails {
     @GeneratedValue( strategy = GenerationType.SEQUENCE, generator = "account_sequence")
     private Long id;
     private String username;
-    private String passwd;
+    private String password;
     private String email;
     private String url;
     @Enumerated(EnumType.STRING)
@@ -32,9 +32,9 @@ public class Account implements UserDetails {
     private Boolean locked;
     private Boolean enabled;
 
-    public Account(String username, String passwd, String email, String url, AccountUserRole accountUserRole, Boolean locked, Boolean enabled) {
+    public Account(String username, String password, String email, String url, AccountUserRole accountUserRole, Boolean locked, Boolean enabled) {
         this.username = username;
-        this.passwd = passwd;
+        this.password = password;
         this.email = email;
         this.url = url;
         this.accountUserRole = accountUserRole;
@@ -46,7 +46,7 @@ public class Account implements UserDetails {
     public String toString() {
         return "Account{" +
                 "username='" + username + '\'' +
-                ", passwd='****" +  '\'' +
+                ", password='****" +  '\'' +
                 ", email='" + email + '\'' +
                 ", url='" + url + '\'' +
                 ", accountUserRole=" + accountUserRole +
@@ -61,7 +61,7 @@ public class Account implements UserDetails {
 
     @Override
     public String getPassword() {
-        return passwd;
+        return password;
     }
 
     @Override
@@ -76,7 +76,7 @@ public class Account implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return !locked;
+        return true;
     }
 
     @Override
@@ -86,6 +86,6 @@ public class Account implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return true;
     }
 }

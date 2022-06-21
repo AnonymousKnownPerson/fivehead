@@ -1,5 +1,5 @@
 package jb.project.fivehead.account;
 
 public enum AccountUserRole {
-    USER, ADMIN
+    ROLE_USER, ROLE_ADMIN
 }

@@ -34,7 +34,9 @@ public class AccountController {
     public void updateAccount(
         @PathVariable("accountId") Long accountId,
         @RequestParam(required = false) String nickname,
-        @RequestParam(required = false) String email){
-        accountService.updateAccount(accountId, nickname, email);
+        @RequestParam(required = false) String email,
+        @RequestParam(required = false) String password,
+        @RequestParam(required = false) String url){
+        accountService.updateAccount(accountId, nickname, email, password, url);
     }
 }

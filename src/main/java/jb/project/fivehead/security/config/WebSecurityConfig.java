@@ -17,22 +17,22 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @AllArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
-
     private final AccountService accountService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                .authorizeRequests().antMatchers("/register**")
-                .permitAll() .anyRequest().authenticated()
+        http.csrf().disable();
+        http.headers().disable();
+        http.authorizeRequests()
+                .antMatchers("/main").authenticated()
+                .antMatchers("/register","/sign-up").permitAll()
                 .and()
-                .formLogin() .loginPage("/login")
-                .permitAll()
-                .and()
-                .logout() .invalidateHttpSession(true)
-                .clearAuthentication(true) .permitAll();
+                .formLogin().defaultSuccessUrl("/main");
+
     }
 
     @Override

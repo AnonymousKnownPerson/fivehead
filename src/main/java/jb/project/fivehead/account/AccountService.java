@@ -2,9 +2,11 @@ package jb.project.fivehead.account;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -13,10 +15,16 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
 public class AccountService implements UserDetailsService {
 
     private final AccountRepository accountRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public AccountService(@Lazy AccountRepository accountRepository,@Lazy PasswordEncoder passwordEncoder) {
+        this.accountRepository = accountRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     private final static String USER_NOT_FOUND="user with username - %s not found";
 
@@ -30,6 +38,8 @@ public class AccountService implements UserDetailsService {
             throw new IllegalStateException("Email taken");
             //DZIENNIK ZDARZEŃ
         }
+        account.setPassword(passwordEncoder.encode(account.getPassword()));
+        account.setAccountUserRole(AccountUserRole.valueOf("ROLE_USER"));
         accountRepository.save(account);
         //DZIENNIK ZDARZEŃ
     }
@@ -44,7 +54,7 @@ public class AccountService implements UserDetailsService {
         //DZIENNIK ZDARZEŃ
     }
     @Transactional
-    public void updateAccount(Long accountId, String nickname, String email) {
+    public void updateAccount(Long accountId, String nickname, String email, String password, String url) {
         Account account = accountRepository.findById(accountId).orElseThrow(() ->
                 new IllegalStateException("account with id -"+ accountId + " doesn't exist"));
         if(nickname != null && !Objects.equals(nickname, account.getUsername())){
@@ -57,6 +67,12 @@ public class AccountService implements UserDetailsService {
                 //DZIENNIK ZDARZEŃ
             }
             account.setEmail(email);
+        }
+        if(password != null && !Objects.equals(passwordEncoder.encode(password), account.getPassword())){
+            account.setPassword(passwordEncoder.encode(password));
+        }
+        if(url != null && !Objects.equals(nickname, account.getUrl())){
+            account.setUrl(url);
         }
     }
 
