@@ -1,22 +1,15 @@
-<!DOCTYPE html >
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" type="text/css" href="/static/header.css" media="screen" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 </head>
 <body>
 <div th:insert="fragments/header :: navbar">  </div>
-<h1>Register to enter</h1>
-<form th:action="@{/register}" method="post">
-    Login:
-    <input type="text" name="username">
-    Password:
-    <input type="password" name="password">
-    Email:
-    <input type="email" name="email">
-    <input type="submit" value="Register New Account">
+<form th:action="@{/main}" method="post">
+    Are you sure you want to delete this message?:
+    <input type="submit" value="Yes">
 </form>
 
 </body>

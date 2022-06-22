@@ -12,7 +12,7 @@
 <div class="container my-2">
     <div class="card">
         <div class="card-body">
-            <div th:switch="${posts}" class="container my-5">
+            <div th:switch="${this_thread}" class="container my-5">
                 <div class="col-md-10">
                     <h2 th:case="null">No Posts yet!</h2>
                     <div th:case="*">
@@ -20,15 +20,13 @@
                             <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Check</th>
-                                <th>Date </th>
+                                <th>Date</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="message : ${posts}">
+                            <tr th:each="message : ${this_thread}">
                                 <td th:text="${message.messageText}"></td>
                                 <td th:text="${message.timestamp}"></td>
-                                <td><a th:href="@{/main/list/{id}(id=${message.id})}" class="btn btn-primary"><i class="fas fa-user-times ml-2"></i>Check</a></td>
                             </tr>
                             </tbody>
                         </table>
@@ -38,7 +36,7 @@
         </div>
     </div>
 </div>
-<form th:action="@{main}" method="post">
+<form th:action="@{/main}" th:object="${message}" method="post">
     Co chcesz napisać?:
     <input type="text" name="messageText">
     <input type="submit" value="Wyślij">

@@ -4,6 +4,7 @@ import jb.project.fivehead.account.AccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,7 +29,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         http.csrf().disable();
         http.headers().disable();
         http.authorizeRequests()
-                .antMatchers("/main").authenticated()
+                .antMatchers(HttpMethod.GET, "/main/account/{^[\\d]$}", "/main", "/main/list/{^[\\d]$}", "/main/edit/{^[\\d]$}","/main/delete/{^[\\d]$}").authenticated()
+                .antMatchers("/main/account/**", "/main/list/**", "/main/edit/**", "/main/delete/**").hasAuthority("USER")
                 .antMatchers("/register","/sign-up").permitAll()
                 .and()
                 .formLogin().defaultSuccessUrl("/main");

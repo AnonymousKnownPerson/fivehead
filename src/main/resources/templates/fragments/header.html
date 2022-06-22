@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>NavigationBar</title>
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../static/header.css" th:href="@{/static/header.css}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+
+<nav th:fragment="navbar" class="navbar navbar-expand-md bg-dark navbar-dark">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/main}">FiveHead</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a class="nav-link" th:href="@{/main/account/3}">Your Account</a></li>
+            <li sec:authorize="isAnonymous()"><a class="nav-link" href="/login">Login</a></li>
+            <li sec:authorize="isAnonymous()"><a class="nav-link" href="/sign-up">Register</a></li>
+            <li sec:authorize="isAuthenticated()"><a class="nav-link" href="/logout">Logout</a></li>
+        </ul>
+        </ul>
+    </div>
+</nav>
+
+</body>
+</html>

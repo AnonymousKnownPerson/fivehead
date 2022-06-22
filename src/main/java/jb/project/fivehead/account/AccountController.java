@@ -1,42 +1,30 @@
 package jb.project.fivehead.account;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.transaction.Transactional;
-import java.util.List;
-
-@RestController
-@RequestMapping(path = "api/v1/account")
+@Controller
+@AllArgsConstructor
 public class AccountController {
-
     private final AccountService accountService;
 
-    @Autowired
-    public AccountController(AccountService accountService){
-        this.accountService = accountService;
+    @GetMapping("/sign-up")
+    public String signUp(Model model){
+        model.addAttribute("user", new Account());
+        return "sign-up";
     }
 
-    @GetMapping
-    public List<Account> getAccounts(){
-        return accountService.getAccounts();
-    }
-
-    @PostMapping
-    public void registerNewAccount(@RequestBody Account account){
+    @PostMapping("/register")
+    public String register(Account account){
         accountService.addNewAccount(account);
+        return "sign-up";
     }
-    @DeleteMapping(path = "{accountId}")
-    public void deleteAccount(@PathVariable("accountId") Long accountId){
-        accountService.deleteAccount(accountId);
+    @GetMapping("")
+    public String startPage(Model model){
+        return "index";
     }
-    @PutMapping(path ="{accountId}")
-    public void updateAccount(
-        @PathVariable("accountId") Long accountId,
-        @RequestParam(required = false) String nickname,
-        @RequestParam(required = false) String email,
-        @RequestParam(required = false) String password,
-        @RequestParam(required = false) String url){
-        accountService.updateAccount(accountId, nickname, email, password, url);
-    }
+
 }
