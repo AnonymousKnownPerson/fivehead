@@ -15,7 +15,7 @@
             <a class="navbar-brand" th:href="@{/main}">FiveHead</a>
         </div>
         <ul class="nav navbar-nav">
-            <li><a class="nav-link" th:href="@{/main/account/3}">Your Account</a></li>
+            <li><a class="nav-link" th:href="@{/main/account}">Your Account</a></li>
             <li sec:authorize="isAnonymous()"><a class="nav-link" href="/login">Login</a></li>
             <li sec:authorize="isAnonymous()"><a class="nav-link" href="/sign-up">Register</a></li>
             <li sec:authorize="isAuthenticated()"><a class="nav-link" href="/logout">Logout</a></li>

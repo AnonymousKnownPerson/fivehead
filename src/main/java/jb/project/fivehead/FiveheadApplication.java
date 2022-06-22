@@ -10,6 +10,7 @@ public class FiveheadApplication {
     private static final Logger log = LogManager.getLogger();
     public static void main(String[] args) {
         SpringApplication.run(FiveheadApplication.class, args);
+
     }
 
 }

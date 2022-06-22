@@ -29,7 +29,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         http.csrf().disable();
         http.headers().disable();
         http.authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/main/account/{^[\\d]$}", "/main", "/main/list/{^[\\d]$}", "/main/edit/{^[\\d]$}","/main/delete/{^[\\d]$}").authenticated()
+                .antMatchers(HttpMethod.GET, "/main/account", "/main", "/main/list/{^[\\d]$}", "/main/edit/{^[\\d]$}","/main/delete/{^[\\d]$}").authenticated()
+                .antMatchers(HttpMethod.POST, "/main/account", "/main", "/main/list/{^[\\d]$}", "/main/edit/{^[\\d]$}","/main/delete/{^[\\d]$}").authenticated()
                 .antMatchers("/main/account/**", "/main/list/**", "/main/edit/**", "/main/delete/**").hasAuthority("USER")
                 .antMatchers("/register","/sign-up").permitAll()
                 .and()

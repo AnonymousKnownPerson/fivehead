@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -24,17 +25,17 @@ public class MessageService {
         this.messageRepository = messageRepository;
     }
 
-    public void addMessageWithParent(Message message, Long id, Long idParent){
-        System.out.println(idParent);
-        message.setIdAuthor(id);
+    public void addMessageWithParent(Message message, Long idAuthor, Long idParent){
+        System.out.println(message.getId());
+        message.setIdAuthor(idAuthor);
         message.setTimestamp(LocalDateTime.now());
         message.setIdParent(idParent);
         messageRepository.save(message);
         logger.info("Message with parent added");
     }
 
-    public void addMessageWithoutParent(Message message, Long id){
-        message.setIdAuthor(id);
+    public void addMessageWithoutParent(Message message, Long idAuthor){
+        message.setIdAuthor(idAuthor);
         message.setTimestamp(LocalDateTime.now());
         message.setIdParent(0L);
         messageRepository.save(message);
@@ -48,7 +49,7 @@ public class MessageService {
             throw new IllegalStateException();
         }
         Message x = messageRepository.getMainMessageToParent(id);
-        if(x.getIdParent()!=0){
+        if(x.getIdParent()==0){
             messageRepository.deleteAll(messageRepository.getMessagesToParent(id));
             logger.info("Messages connected to this message are deleted");
         }
@@ -76,8 +77,11 @@ public class MessageService {
 
     }
     public List getMessagesToParent(Long idParent){
-        List<Message> test = (List<Message>) messageRepository.getMainMessageToParent(idParent);
+        List<Message> test = new ArrayList<>();
+
+        test.add(messageRepository.getMainMessageToParent(idParent));
         test.addAll(messageRepository.getMessagesToParent(idParent));
+        logger.info(test.toString());
         logger.info("Messages sent successfully!");
         return test;
 
@@ -85,7 +89,6 @@ public class MessageService {
     public Message getMessage(Long id){
         Message message = messageRepository.findById(id).orElseThrow();
         logger.info("Message sent successfully!");
-
         return message;
     }
 }

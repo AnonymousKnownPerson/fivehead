@@ -15,4 +15,8 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     Optional<Account> findUserByUsername(String username);
 
+    @Query("SELECT temp FROM Account temp WHERE temp.username = ?1")
+    Account findUserrByUsername(String username);
+
+
 }

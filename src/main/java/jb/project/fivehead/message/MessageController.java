@@ -1,6 +1,7 @@
 package jb.project.fivehead.message;
 
 import jb.project.fivehead.account.Account;
+import jb.project.fivehead.account.AccountRepository;
 import jb.project.fivehead.account.AccountService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.Optional;
 @RequestMapping("/main")
 public class MessageController {
     private final MessageService messageService;
+    private final AccountService accountService;
 
     @GetMapping("")
     public String main(Model model){
@@ -24,24 +26,26 @@ public class MessageController {
         return "main";
     }
     @PostMapping("/list/{id}")
-    public String AddMessageParent(Message message,@AuthenticationPrincipal Account account, @PathVariable ("id") long idParent, Model model){
-        System.out.println("idParent");
-        System.out.println(idParent);
+    public String AddMessageParent(Message mes,@AuthenticationPrincipal Account account, @PathVariable ("id") long idParent, Model model){
+        Message message = new Message();
+        message.setMessageText(mes.getMessageText());
         messageService.addMessageWithParent(message, account.getId(), idParent);
-        model.addAttribute("posts", messageService.getMessagesToMain());
-        return "main";
+        model.addAttribute("this_thread", messageService.getMessagesToParent(idParent));
+        model.addAttribute("mes", new Message());
+        return "this_thread";
     }
 
     @GetMapping("/list/{id}")
     public String main(Model model, @PathVariable ("id") long id){
+        model.addAttribute("mes", new Message());
         model.addAttribute("this_thread", messageService.getMessagesToParent(id));
         return "this_thread";
     }
 
-    @GetMapping("/account/{accountId}")
-    public String accountPage(Principal principal, Model model, @PathVariable("accountId") Long accountId){
+    @GetMapping("/account")
+    public String accountPage(Principal principal, Model model){
         model.addAttribute("name", principal.getName());
-        model.addAttribute("my_messages", messageService.getMessagesToAccount(accountId));
+        model.addAttribute("my_messages", messageService.getMessagesToAccount(accountService.takeAccount(principal.getName())));
         return "account";
     }
     @PostMapping("")
@@ -71,8 +75,7 @@ public class MessageController {
     @GetMapping("/delete/{id}")
     public String deleteMessage(@PathVariable ("id") long id, Model model) {
         messageService.deleteMessage(id);
-        model.addAttribute("posts", messageService.getMessagesToMain());
-        return "main";
+        return "redirect:/main";
 
     }
 }

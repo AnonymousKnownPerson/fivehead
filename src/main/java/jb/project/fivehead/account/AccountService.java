@@ -97,4 +97,7 @@ public class AccountService implements UserDetailsService {
         return accountRepository.findUserByUsername(username).orElseThrow(
                 ()-> new UsernameNotFoundException(String.format(USER_NOT_FOUND, username)));
     }
+    public Long takeAccount(String username) {
+        return accountRepository.findUserrByUsername(username).getId();
+    }
 }

@@ -36,7 +36,7 @@
         </div>
     </div>
 </div>
-<form th:action="@{/main}" th:object="${message}" method="post">
+<form th:object="${mes}"  method="post">
     Co chcesz napisać?:
     <input type="text" name="messageText">
     <input type="submit" value="Wyślij">
